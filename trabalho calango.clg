@@ -1,0 +1,101 @@
+algoritmo sistema_de_correcao_para_gabaritos;
+// Síntese
+//  Objetivo: Corrigir a prova objetivade uma turma a partir de um gabarito declarado, calcular a média de acertos da turma e mostrar o ranking da turma
+//  Entrada : O gabarito da prova composto por letras, a quatidade de alunos da turma, o nome de cada alunos e suas respostas
+//  Saída   : Quais as respostas corretas e incorretas logo após digitadas, a quantidade de acertos individuais, a mádia de acertos da turma e o ranking dos alunos (classificação dos alunos com o maior número de acertos para menor número de acertos)
+
+
+principal
+	// Declarações
+	caracter gabarito[10], resposta[10];
+	texto nome[100], alunos[100], auxa;
+	inteiro i, u, j, q, acertos[100], soma, total[100], esq, dir, aux;
+	real media;
+
+	// Instruções
+	i = 0;
+	u = 0;
+	j = 0;
+
+
+	// Gabarito e Respostas
+	escreval("Digite o gabarito da prova, da questão 1 a 10 , utilizando apenas letras.");
+	para( j de 0 ate 9 passo 1 ) faca
+		leiaCaracter(gabarito[j]);
+	fimPara
+	escreval(""); // Apenas por estética
+
+	escreval("Informe a quantidade de alunos (limitada em 100) utilizando apenas algarismos.");
+	leia(q);
+	escreval(""); // Apenas por estética
+
+	faca
+		escreval("Digite o nome do aluno");
+		leia(nome[i]);
+		alunos[i] = nome[i];
+		acertos[i] = 0;
+		escreval("Digite as respostas deste aluno em ordem da questao 1 a questao 10, utilizando apenas letras.");
+		para(j de 0 ate 9 passo 1) faca
+			leiaCaracter(resposta[j]);
+			se(resposta[j] == gabarito[j]) entao
+				correta();
+				acertos[i] = acertos[i] + 1;
+			senao
+				incorreta();
+			fimSe
+		fimPara
+		total[i] = acertos[i];
+		escreval("A quantidadde de acertos deste aluno é: ", acertos[i]);
+		escreval(""); // Apenas por estética
+		i = i + 1;
+	enquanto(i < q);
+
+	
+	// Média
+	escreval("A media total da turma é: ", media_turma(soma, media, total, u, q));
+	escreval(""); // Apenas por estética
+
+
+	// Ranking
+	para (dir de 0 ate q-1 passo 1) faca
+		para (esq de dir+1 ate q-1 passo 1) faca
+			se (acertos[esq] > acertos[dir]) entao
+				aux = acertos[esq];
+				acertos[esq] = acertos[dir];
+				acertos[dir] = aux;
+				auxa = nome[esq];
+				nome[esq] = nome[dir];
+				nome[dir] = auxa;
+			fimSe
+		fimPara
+	fimPara
+	escreval("Ranking da turma: ");
+	para (i de 0 ate q-1 passo 1 ) faca
+		escreval(nome[i]," : ", acertos[i], " acertos.");
+	fimPara
+
+	
+fimPrincipal
+
+
+	//Procedimentos para mostrar se as respostas estão corretas ou incorretas logo após digitadas
+	procedimento correta()
+		escreval("Resposta correta");
+	fimProcedimento
+
+	procedimento incorreta()
+		escreval("Resposta incorreta");
+	fimProcedimento
+
+
+	// Função para calcular a média da turma
+	funcao real media_turma(inteiro soma,real media,inteiro total[], inteiro u, inteiro q)
+		media = 0;
+		soma = 0;
+		para (u de 0 ate q-1 passo 1 ) faca
+			soma = (soma + total[u]);
+			media = soma/q;
+		fimPara
+		retorna media;
+	fimFuncao
+	
